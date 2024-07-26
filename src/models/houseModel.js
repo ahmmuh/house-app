@@ -1,39 +1,79 @@
 import mongoose from "mongoose";
+import { body } from 'express-validator';
 
 const houseSchema = new mongoose.Schema({
-    type: {
+    houseType: {
         type: String,
         enum: ['Fillo', 'Dabaq', 'Jiingad', 'Baacweeyne', 'Modul', 'Hotel'],
-        required: true
+        required: true,
+        message: 'Vänligen välj en huskategori.',
+    },
+    city: {
+        type: String,
+        required: true,
+        message: 'Stad är obligatoriskt.',
+    },
+    district: {
+        type: String,
+        required: true,
+        message: 'Område är obligatoriskt.',
     },
     description: { type: String },
-    bathrooms: { type: Number, required: true },
-    houseSize: { type: Number, required: true },
-    thumbnail: { type: String },
-    yearBuilt: { type: Number, required: true },
-    squareMeters: { type: Number, required: true },
-    price: { type: Number, required: true },
-    rooms: { type: Number, required: true },
-    wifi: { type: Boolean, required: true },
-    water: { type: Boolean, required: true },
-    toilets: { type: Number, required: true },
-    images: [{ type: String, required: true }],
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+    bathrooms: {
+        type: Number,
         required: true,
+        message: 'Antal badrum är obligatoriskt.',
     },
+    houseSize: {
+        type: Number,
+        required: true,
+        message: 'Husstorlek är obligatoriskt.',
+    },
+    thumbnail: { type: String },
+    yearBuilt: {
+        type: Date,
+        required: true,
+        message: 'Byggår är obligatoriskt.',
+    },
+    squareMeters: {
+        type: Number,
+        required: true,
+        message: 'Kvadratmeter är obligatoriskt.',
+    },
+    price: {
+        type: Number,
+        required: true,
+        message: 'Pris är obligatoriskt.',
+    },
+    rooms: {
+        type: Number,
+        required: true,
+        message: 'Antal rum är obligatoriskt.',
+    },
+    wifi: { type: Boolean, required: true, message: 'WiFi-tilgänglighet är obligatoriskt.' },
+    water: { type: Boolean, required: true, message: 'Vatten-tilgänglighet är obligatoriskt.' },
+    toilets: {
+        type: Number,
+        required: true,
+        message: 'Antal toaletter är obligatoriskt.',
+    },
+    images: [{
+        type: String,
+        required: true,
+        message: 'Minst en bild är obligatoriskt.',
+    }],
     location: {
         latitude: Number,
         longitude: Number,
     },
-    parking: { type: Boolean },
-    status: {
+    parking: { type: Boolean, required: true, message: 'Parkering är obligatoriskt.' },
+    houseStatus: {
         type: String,
         enum: ['Kiro', 'Iibin', 'Badal', 'Iibsasho'],
-        required: true
+        required: true,
+        message: 'Husstatus är obligatoriskt.',
     },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
 });
 
 export const HouseModel = mongoose.model('HouseModel', houseSchema);

@@ -3,9 +3,10 @@ import {
     createHouse,
     deleteHouse,
     getHouseById,
-    getHouses, getHousesWithPagination, searchHousesByHighPrice, searchHousesByLowPrice,
-    updateHouse
-} from "../controllers/HouseController.js";
+    getHouses, getHousesWithPagination,
+    searchHousesByHighPrice, searchHousesByLowPrice,
+    updateHouse,
+} from "../controllers/webController.js";
 
 const router = express.Router();
 
@@ -21,5 +22,7 @@ router.get('/houses/lowprices', searchHousesByLowPrice);
 
 router.get('/houses/pagination', getHousesWithPagination);
 
+//count all houses
+//router.get("/houses/count", countAllHouses);
 
 export default router;

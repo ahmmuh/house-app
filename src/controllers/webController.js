@@ -7,7 +7,8 @@ import {User} from "../models/User.js";
 export const getHouses = async (req, res) => {
     try {
         const houses = await HouseModel.find();
-        res.status(200).json(houses); // Skickar tillbaka listan med hus i JSON-format
+        const userAge = 20
+        res.render("index", {houses},{userAge})
     } catch (error) {
         res.status(500).json({ message: "Failed to load resource: the server responded with a status of 500 (Internal Server Erro" });
     }
@@ -34,6 +35,12 @@ export const createHouse = async (req, res) => {
 
         const {
             houseType,
+            city,
+            district,
+            description,
+            bathrooms,
+            houseSize,
+            thumbnail,
             yearBuilt,
             squareMeters,
             price,
@@ -41,19 +48,24 @@ export const createHouse = async (req, res) => {
             wifi,
             water,
             toilets,
-            address,
+            images,
             location,
             parking,
-            busConnection,
-            category,
-            user,
+            houseStatus,
+            // user,
         } = req.body;
 
 
-        const ownerUser = await User.findById(req.body.user);
+       // const ownerUser = await User.findById(req.body.user);
 
         const newHouse = new HouseModel({
             houseType,
+            city,
+            district,
+            description,
+            bathrooms,
+            houseSize,
+            thumbnail,
             yearBuilt,
             squareMeters,
             price,
@@ -61,19 +73,17 @@ export const createHouse = async (req, res) => {
             wifi,
             water,
             toilets,
-            address,
+            images,
             location,
             parking,
-            busConnection,
-            category,
-            user,
+            houseStatus,
+           // user,
         });
+        console.log("New home: ", newHouse)
         await newHouse.save();
-        console.log("The new House is here ", newHouse);
         res.status(201).json({ message: "One House has been created" });
     } catch (error) {
-        console.error("Error creating category")
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Fadlan iska hubi inaa buux buuxisay warbixin dhamestiran", msg: error.message });
     }
 };
 
@@ -148,4 +158,15 @@ export const searchHousesByLowPrice = async (req, res) => {
     } catch (e) {
         res.status(500).json({ message: "Fel med low price" });
     }
+
 };
+
+
+export const countAllHouses = async (req, res) => {
+    try {
+        const countedHouses = await HouseModel.findOne().countDocuments();
+        res.status(200).json({TotalHouses: countedHouses})
+    } catch (err) {
+        res.status(500).json({message: "Internal server error"});
+    }
+}
