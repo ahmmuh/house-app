@@ -1,7 +1,5 @@
 
 import {HouseModel} from "../models/houseModel.js";
-import {User} from "../models/User.js";
-
 
 
 export const getHouses = async (req, res) => {
@@ -9,7 +7,7 @@ export const getHouses = async (req, res) => {
         const houses = await HouseModel.find();
         res.status(200).json(houses); // Skickar tillbaka listan med hus i JSON-format
     } catch (error) {
-        res.status(500).json({ message: "Failed to load resource: the server responded with a status of 500 (Internal Server Erro" });
+        res.status(500).json({ message: "Failed to load resource: the server responded with a status of 500 (Internal Server Erro Ayuub" });
     }
 };
 
@@ -38,7 +36,6 @@ export const createHouse = async (req, res) => {
             district,
             description,
             bathrooms,
-            houseSize,
             thumbnail,
             yearBuilt,
             squareMeters,
@@ -50,7 +47,7 @@ export const createHouse = async (req, res) => {
             images,
             location,
             parking,
-            houseStatus,
+            houseTransactions,
             // user,
         } = req.body;
 
@@ -63,7 +60,6 @@ export const createHouse = async (req, res) => {
             district,
             description,
             bathrooms,
-            houseSize,
             thumbnail,
             yearBuilt,
             squareMeters,
@@ -75,10 +71,9 @@ export const createHouse = async (req, res) => {
             images,
             location,
             parking,
-            houseStatus,
+            houseTransactions,
             // user,
         });
-        console.log("New home: ", newHouse)
         await newHouse.save();
         res.status(201).json({ message: "One House has been created" });
     } catch (error) {
@@ -109,6 +104,28 @@ export const deleteHouse = async (req, res) => {
 
 
 // extra functions
+
+export const getHouseList = (req, res) => {
+    try {
+        res.send("Ahmed");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Something went wrong");
+    }
+};
+export const getCity = async (req, res) => {
+    try{
+        const districts = await HouseModel.find();
+        const singleDistrict = Array.from(districts).filter(district => district.district === "Siinaay")
+        res.status(200).send(singleDistrict);
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).json({message: "District not found"})
+    }
+}
+
+
 
 
 export const getHousesWithPagination = async (req, res) => {
@@ -152,7 +169,7 @@ export const searchHousesByHighPrice = async (req, res) => {
 export const searchHousesByLowPrice = async (req, res) => {
     try {
         const lowPriceHouses = await HouseModel.find({ price: { $lte: 200 } });
-        console.log("Low prices: ", lowPriceHouses);
+        console.log("Low prices by Ahmed: ", lowPriceHouses);
         res.status(200).json(lowPriceHouses);
     } catch (e) {
         res.status(500).json({ message: "Fel med low price" });

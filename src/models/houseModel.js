@@ -24,11 +24,6 @@ const houseSchema = new mongoose.Schema({
         required: true,
         message: 'Antal badrum är obligatoriskt.',
     },
-    houseSize: {
-        type: Number,
-        required: true,
-        message: 'Husstorlek är obligatoriskt.',
-    },
     thumbnail: { type: String },
     yearBuilt: {
         type: Date,
@@ -50,8 +45,10 @@ const houseSchema = new mongoose.Schema({
         required: true,
         message: 'Antal rum är obligatoriskt.',
     },
-    wifi: { type: Boolean, required: true, message: 'WiFi-tilgänglighet är obligatoriskt.' },
-    water: { type: Boolean, required: true, message: 'Vatten-tilgänglighet är obligatoriskt.' },
+    wifi: { type: Boolean,
+        enum: ["Yes","No"] ,required: true, message: 'WiFi-tilgänglighet är obligatoriskt.' },
+    water: { type: Boolean,
+        enum: ["Yes","No"] ,required: true, message: 'Vatten-tilgänglighet är obligatoriskt.' },
     toilets: {
         type: Number,
         required: true,
@@ -66,8 +63,8 @@ const houseSchema = new mongoose.Schema({
         latitude: Number,
         longitude: Number,
     },
-    parking: { type: Boolean, required: true, message: 'Parkering är obligatoriskt.' },
-    houseStatus: {
+    parking: { type: Boolean, enum: ["Yes","No"], required: true, message: 'Parkering är obligatoriskt.' },
+    houseTransactions: {
         type: String,
         enum: ['Kiro', 'Iibin', 'Badal', 'Iibsasho'],
         required: true,
