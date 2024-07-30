@@ -41,12 +41,12 @@ export const createHouse = async (req, res) => {
             squareMeters,
             price,
             rooms,
-            wifi,
-            water,
+            houseWifi,
+            houseWater,
             toilets,
             images,
             location,
-            parking,
+            houseParking,
             houseTransactions,
             // user,
         } = req.body;
@@ -65,12 +65,12 @@ export const createHouse = async (req, res) => {
             squareMeters,
             price,
             rooms,
-            wifi,
-            water,
+            houseWifi,
+            houseWater,
             toilets,
             images,
             location,
-            parking,
+            houseParking,
             houseTransactions,
             // user,
         });
@@ -105,14 +105,28 @@ export const deleteHouse = async (req, res) => {
 
 // extra functions
 
-export const getHouseList = (req, res) => {
-    try {
-        res.send("Ahmed");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Something went wrong");
+//getHouseTypes måste rättas
+export const getHouseEnumTypeValues = async (req, res) => {
+   try{
+       const {enumType} = req.params
+       const houseTypesEnumValuse = await HouseModel.schema.path(enumType).enumValues;
+
+       if (!enumType) {
+          return res.status(404).json({success: false, message: `No enumType found for ${enumType}`});
+       }
+       res.status(200).json(houseTypesEnumValuse);
+
+   }
+    catch(err){
+       console.error(err);
+       res.status(500).json({ success: false, message: `${err.message}` });
     }
 };
+
+
+
+
+
 export const getCity = async (req, res) => {
     try{
         const districts = await HouseModel.find();

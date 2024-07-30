@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { body } from 'express-validator';
 
 const houseSchema = new mongoose.Schema({
     houseType: {
@@ -7,6 +6,12 @@ const houseSchema = new mongoose.Schema({
         enum: ['Fillo', 'Dabaq', 'Jiingad', 'Baacweeyne', 'Modul', 'Hotel'],
         required: true,
         message: 'Vänligen välj en huskategori.',
+    },
+    houseTransactions: {
+        type: String,
+        enum: ['Kiro', 'Iibin', 'Badal', 'Iibsasho'],
+        required: true,
+        message: 'Husstatus är obligatoriskt.',
     },
     city: {
         type: String,
@@ -45,10 +50,19 @@ const houseSchema = new mongoose.Schema({
         required: true,
         message: 'Antal rum är obligatoriskt.',
     },
-    wifi: { type: Boolean,
-        enum: ["Yes","No"] ,required: true, message: 'WiFi-tilgänglighet är obligatoriskt.' },
-    water: { type: Boolean,
-        enum: ["Yes","No"] ,required: true, message: 'Vatten-tilgänglighet är obligatoriskt.' },
+    houseWifi: {
+        type: String,
+        enum: ['Available', 'Not Available'],
+        required: true
+    },
+
+    houseWater: {
+        type: String,
+        enum: ['Public', 'Well', 'None'],
+        required: true,
+        message: 'Vatten-tilgänglighet är obligatoriskt.'
+    },
+
     toilets: {
         type: Number,
         required: true,
@@ -59,16 +73,17 @@ const houseSchema = new mongoose.Schema({
         required: true,
         message: 'Minst en bild är obligatoriskt.',
     }],
+
+
+    houseParking: {
+        type: String,
+        enum: ['Garage', 'Street', 'None'],
+        required: true,
+        message: 'WiFi-tilgänglighet är obligatoriskt.'
+    },
     location: {
         latitude: Number,
         longitude: Number,
-    },
-    parking: { type: Boolean, enum: ["Yes","No"], required: true, message: 'Parkering är obligatoriskt.' },
-    houseTransactions: {
-        type: String,
-        enum: ['Kiro', 'Iibin', 'Badal', 'Iibsasho'],
-        required: true,
-        message: 'Husstatus är obligatoriskt.',
     },
     createdAt: { type: Date, default: Date.now },
 });

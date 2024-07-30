@@ -1,11 +1,10 @@
 import express from 'express';
 import {
     getCity,
-    getHouseList,
-     searchHousesByHighPrice,
+    searchHousesByHighPrice,
     searchHousesByLowPrice,
     getHousesWithPagination,
-    countAllHouses,
+    countAllHouses, getHouseEnumTypeValues,
 } from "../controllers/apiController.js";
 
 const router = express.Router();
@@ -14,7 +13,8 @@ router.get('/houses/highprices', searchHousesByHighPrice);
 router.get('/houses/lowprices', searchHousesByLowPrice);
 
 router.get('/houses/paginations', getHousesWithPagination);
-router.get("/lista", getHouseList);
+router.get("/houses/enums/:enumType", getHouseEnumTypeValues);
+
 router.get("/districts", getCity)
 //count all houses
 router.get("/houses/count", countAllHouses);

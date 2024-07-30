@@ -16,6 +16,9 @@ app.use('/api', houseRoutes);
 
 app.use('/api', crudRoutes)
 
+app.use((req, res, next) => {
+    res.status(500).send('Something went wrong!');
+});
 
 app.listen(PORT, () => {
     getConnection();
