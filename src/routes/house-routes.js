@@ -5,7 +5,7 @@ import {
     searchHousesByLowPrice,
     getHousesWithPagination,
     countAllHouses, getHouseEnumTypeValues,
-} from "../controllers/apiController.js";
+} from "../controllers/houseController.js";
 
 const router = express.Router();
 

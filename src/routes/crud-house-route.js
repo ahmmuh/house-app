@@ -5,7 +5,7 @@ import {
     getHouseById,
     getHouses,
     updateHouse,
-} from "../controllers/apiController.js";
+} from "../controllers/houseController.js";
 
 
 
