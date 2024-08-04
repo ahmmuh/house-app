@@ -86,11 +86,13 @@ const houseSchema = new mongoose.Schema({
         required: true,
         message: 'WiFi-tilgänglighet är obligatoriskt.'
     },
-/*    location: {
-        latitude: Number,
-        longitude: Number,
-    },*/
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+    },
+
     createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
 });
 
 export const HouseModel = mongoose.model('HouseModel', houseSchema);

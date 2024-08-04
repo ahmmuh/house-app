@@ -1,5 +1,6 @@
 import {HouseModel} from "../models/houseModel.js";
-import { Buffer } from 'buffer'; // Importera Buffer från Node.js
+import { Buffer } from 'buffer';
+import {HouseCategory} from "../models/house-category.js"; // Importera Buffer från Node.js
 
 export const getHouses = async (req, res) => {
     try {
@@ -34,6 +35,12 @@ export const addHouse = async (req, res) => {
 export const createHouse = async (req, res) => {
 
     try {
+        const category = req.params.category
+        console.log("CategoryID params", category)
+        const newCategory = await HouseCategory.findById(category)
+        if(!newCategory){
+            return res.status(404).json({message: 'No House Category, choose category !!!'});
+        }
         if (!req.body.images || req.body.images.length === 0) {
             return res.status(400).json({ success: false, message: "Files are required" });
         }
@@ -63,7 +70,8 @@ export const createHouse = async (req, res) => {
             houseWifi,
             houseWater,
             toilets,
-            houseParking
+            houseParking,
+           // category
 
             // user,
         } = req.body;
@@ -89,6 +97,7 @@ export const createHouse = async (req, res) => {
                 data: req.file.buffer,
                 type: req.file.mimetype
             },*/
+          //  category,
             images,
             //location,
             // user,

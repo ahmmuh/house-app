@@ -64,6 +64,9 @@ const landSchema = new mongoose.Schema({
             required: [true, 'Isuduwaha waa lama huraan']
         }
     },
+
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
 });
 
 const LandModel = mongoose.model('LandModel', landSchema);
