@@ -1,13 +1,12 @@
-
 import {HouseModel} from "../models/houseModel.js";
-
+import { Buffer } from 'buffer'; // Importera Buffer från Node.js
 
 export const getHouses = async (req, res) => {
     try {
         const houses = await HouseModel.find();
         res.status(200).json(houses); // Skickar tillbaka listan med hus i JSON-format
     } catch (error) {
-        res.status(500).json({ message: "Failed to load resource: the server responded with a status of 500 (Internal Server Erro Ayuub" });
+        res.status(500).json({ message: "Failed to load resource: the server responded with a status of 500 (Internal Server Erro" });
     }
 };
 
@@ -27,54 +26,75 @@ export const getHouseById = async (req, res) => {
 };
 
 
+
+export const addHouse = async (req, res) => {
+    console.log(req.body)
+}
+
 export const createHouse = async (req, res) => {
+
     try {
+        if (!req.body.images || req.body.images.length === 0) {
+            return res.status(400).json({ success: false, message: "Files are required" });
+        }
+
+        const images = req.body.images.map((image) => {
+            if (typeof image.base64 !== 'string') {
+                throw new Error('Invalid base64 string');
+            }
+            return {
+                type: Buffer.from(image.base64.split(",")[1], 'base64'),
+                contentType: image.type
+            };
+        });
+
 
         const {
             houseType,
-            city,
-            district,
+            houseTransactions,
             description,
             bathrooms,
-            thumbnail,
             yearBuilt,
             squareMeters,
+            houseWidth,
+            houseHeight,
             price,
             rooms,
             houseWifi,
             houseWater,
             toilets,
-            images,
-            location,
-            houseParking,
-            houseTransactions,
+            houseParking
+
             // user,
         } = req.body;
-
 
         // const ownerUser = await User.findById(req.body.user);
 
         const newHouse = new HouseModel({
             houseType,
-            city,
-            district,
+            houseTransactions,
             description,
             bathrooms,
-            thumbnail,
             yearBuilt,
+            houseHeight,
+            houseWidth,
             squareMeters,
             price,
             rooms,
             houseWifi,
             houseWater,
             toilets,
-            images,
-            location,
             houseParking,
-            houseTransactions,
+         /*   thumbnail: {
+                data: req.file.buffer,
+                type: req.file.mimetype
+            },*/
+            images,
+            //location,
             // user,
         });
         await newHouse.save();
+        console.log(newHouse)
         res.status(201).json({ message: "One House has been created" });
     } catch (error) {
         res.status(500).json({ error: "Fadlan iska hubi inaa buux buuxisay warbixin dhamestiran", msg: error.message });
@@ -198,5 +218,24 @@ export const countAllHouses = async (req, res) => {
         res.status(200).json({TotalHouses: countedHouses})
     } catch (err) {
         res.status(500).json({message: "Internal server error"});
+    }
+}
+
+
+//fetch cities with villages
+export const getCities = async (req,res) =>{
+    try{
+        const {enumType} = req.params
+        const houseTypesEnumValuse = await HouseModel.schema.path(enumType).enumValues;
+
+        if (!enumType) {
+            return res.status(404).json({success: false, message: `No enumType found for ${enumType}`});
+        }
+        res.status(200).json(houseTypesEnumValuse);
+
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json({ success: false, message: `${err.message}` });
     }
 }

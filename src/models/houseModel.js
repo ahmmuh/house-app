@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+/*const imageSchema = new mongoose.Schema({
+    data: Buffer,
+    contentType: String
+});*/
 const houseSchema = new mongoose.Schema({
     houseType: {
         type: String,
@@ -13,27 +17,26 @@ const houseSchema = new mongoose.Schema({
         required: true,
         message: 'Husstatus är obligatoriskt.',
     },
-    city: {
-        type: String,
-        required: true,
-        message: 'Stad är obligatoriskt.',
-    },
-    district: {
-        type: String,
-        required: true,
-        message: 'Område är obligatoriskt.',
-    },
     description: { type: String },
     bathrooms: {
         type: Number,
         required: true,
         message: 'Antal badrum är obligatoriskt.',
     },
-    thumbnail: { type: String },
     yearBuilt: {
         type: Date,
         required: true,
         message: 'Byggår är obligatoriskt.',
+    },
+    houseWidth:{
+        type: Number,
+        required: true,
+        message: 'Ballaca dhulka waa lama huraan'
+    },
+    houseHeight: {
+        type: Number,
+        required: true,
+        message:"Dhererka guriga waa imisa?"
     },
     squareMeters: {
         type: Number,
@@ -52,13 +55,21 @@ const houseSchema = new mongoose.Schema({
     },
     houseWifi: {
         type: String,
-        enum: ['Available', 'Not Available'],
+        enum: ['Haa', 'Maya'],
         required: true
     },
-
+ /*   thumbnail:{
+        data: Buffer,
+        type: String,
+        required: true
+    },*/
+  images:[{
+        data: Buffer,
+        contentType: String
+    }],
     houseWater: {
         type: String,
-        enum: ['Public', 'Well', 'None'],
+        enum: ['Haa', 'Biyo malahan'],
         required: true,
         message: 'Vatten-tilgänglighet är obligatoriskt.'
     },
@@ -68,23 +79,17 @@ const houseSchema = new mongoose.Schema({
         required: true,
         message: 'Antal toaletter är obligatoriskt.',
     },
-    images: [{
-        type: String,
-        required: true,
-        message: 'Minst en bild är obligatoriskt.',
-    }],
-
-
+/*    images: [imageSchema],*/
     houseParking: {
         type: String,
         enum: ['Garage', 'Street', 'None'],
         required: true,
         message: 'WiFi-tilgänglighet är obligatoriskt.'
     },
-    location: {
+/*    location: {
         latitude: Number,
         longitude: Number,
-    },
+    },*/
     createdAt: { type: Date, default: Date.now },
 });
 

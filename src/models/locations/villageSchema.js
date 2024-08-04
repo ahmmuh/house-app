@@ -1,13 +1,11 @@
-import mongoose from 'mongoose';
+/*
+import mongoose from "mongoose";
+import {neighborhoodSchema} from "./neighborhoodSchema.js";
 
-const landSchema = new mongoose.Schema({
-    city: {
+const villageSchema = new mongoose.Schema({
+    name: {
         type: String,
-        enum: ['Muqdisho', 'Hargeysa', 'Boosaaso', 'Kismaayo', 'Baydhabo', 'Garoowe', 'Beledweyne', 'Gaalkacyo', 'Jowhar', 'Baraawe'],
-        required: true
-    },
-    village: {
-        type: String,
+        required: true,
         enum: [
             // Muqdisho
             'Afgooye', 'Jowhar', 'Balcad',
@@ -30,10 +28,14 @@ const landSchema = new mongoose.Schema({
             // Baraawe
             'Marka', 'Qoryooley', 'Kurtunwarey'
         ],
-        required: true
     },
-    neighborhood: {
+    neighborhoods: [neighborhoodSchema]
+})
+
+const neighborhoodSchema = new mongoose.Schema({
+    name: {
         type: String,
+        required: true,
         enum: [
             // Afgooye
             'Buulo Mareer', 'Lafoole', 'Ceelasha Biyaha',
@@ -96,10 +98,10 @@ const landSchema = new mongoose.Schema({
             // Kurtunwarey
             'Buulo Mareer', 'Golweyn', 'Dhanaane'
         ],
-        required: true
+
     }
 });
 
-const LandModel = mongoose.model('LandModel', landSchema);
+export {villageSchema}
 
-export default LandModel;
+export const Village = mongoose.model("Village", villageSchema);*/
