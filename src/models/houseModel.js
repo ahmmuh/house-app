@@ -1,9 +1,4 @@
 import mongoose from "mongoose";
-
-/*const imageSchema = new mongoose.Schema({
-    data: Buffer,
-    contentType: String
-});*/
 const houseSchema = new mongoose.Schema({
     houseType: {
         type: String,
@@ -20,7 +15,7 @@ const houseSchema = new mongoose.Schema({
         type: String,
         enum: ['Kiro', 'Iibin', 'Iibsasho', 'Baddal'],
         required: true,
-        message: 'Husstatus är obligatoriskt.',
+        message: 'Hus status är obligatoriskt.',
     },
     houseStairs: {
         type: String,
@@ -44,8 +39,9 @@ const houseSchema = new mongoose.Schema({
         message: 'Ballaca dhulka waa lama huraan'
     },
     houseKitchen:{
-        type: String,
-        enum:['Haa','Maya']
+        type: Boolean,
+        required: true,
+        message: 'Kitchen är ett måste'
     },
     houseHeight: {
         type: Number,
@@ -68,27 +64,21 @@ const houseSchema = new mongoose.Schema({
         message: 'Antal rum är obligatoriskt.',
     },
 
-    roomType: { type: String, enum: ['single room', 'double room'], default: 'single room' },
+    roomType: { type: String, enum: ['Qol caadi ah (Singel room)', 'Qol alaab wareeg ah taalo (Double room'], default: 'single room' },
     privateBathroom: { type: Boolean, enum:['Yes','No'], default: false },
     // Common attributes
     available: { type: Boolean, default: true },
     houseWifi: {
-        type: String,
-        enum: ['Haa', 'Maya'],
+        type: Boolean,
         required: true
     },
- /*   thumbnail:{
-        data: Buffer,
-        type: String,
-        required: true
-    },*/
+
   images:[{
         data: Buffer,
         contentType: String
     }],
     houseWater: {
-        type: String,
-        enum: ['Haa', 'Biyo malahan'],
+        type: Boolean,
         required: true,
         message: 'Vatten-tilgänglighet är obligatoriskt.'
     },
@@ -100,16 +90,78 @@ const houseSchema = new mongoose.Schema({
     },
     toiletType: { type: String, enum: ['private', 'public'], default: 'public' },
 
-    /*    images: [imageSchema],*/
     houseParking: {
-        type: String,
-        enum: ['Garage', 'Street', 'None'],
+        type: Boolean,
         required: true,
-        message: 'WiFi-tilgänglighet är obligatoriskt.'
+        message: 'Parking är obligatoriskt.'
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
+    },
+
+
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
+
+    airportShuttle: {
+        type: Boolean,
+        default: false
+    },
+    familyRooms: {
+        type: Boolean,
+        default: false
+    },
+
+    restaurant: {
+        type: Boolean,
+        default: false
+    },
+    nonSmokingRooms: {
+        type: Boolean,
+        default: false
+    },
+    roomService: {
+        type: Boolean,
+        default: false
+    },
+    rontDesk24hr: {
+        type: Boolean,
+        default: false
+    },
+    teaCoffeeMaker: {
+        type: Boolean,
+        default: false
+    },
+    breakfast: {
+        type: Boolean,
+        default: false
+    },
+
+    terrace: {
+        type: Boolean,
+        default: false
+    },
+    laundry: {
+        type: Boolean,
+        default: false
+    },
+    elevator: {
+        type: Boolean,
+        default: false
+    },
+    dailyHousekeeping: {
+        type: Boolean,
+        default: false
     },
 
     createdAt: { type: Date, default: Date.now },
