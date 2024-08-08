@@ -115,52 +115,64 @@ const houseSchema = new mongoose.Schema({
 
     airportShuttle: {
         type: Boolean,
+        required: true,
         default: false
     },
     familyRooms: {
         type: Boolean,
+        required: true,
         default: false
     },
 
     restaurant: {
         type: Boolean,
+        required: true,
         default: false
     },
     nonSmokingRooms: {
         type: Boolean,
+        required: true,
         default: false
     },
     roomService: {
         type: Boolean,
+        required: true,
         default: false
     },
     rontDesk24hr: {
         type: Boolean,
+        required: true,
         default: false
     },
     teaCoffeeMaker: {
         type: Boolean,
+        required: true,
         default: false
     },
     breakfast: {
         type: Boolean,
+        required: true,
         default: false
     },
 
     terrace: {
         type: Boolean,
+        required: true,
         default: false
     },
     laundry: {
         type: Boolean,
+        required: true,
         default: false
     },
     elevator: {
         type: Boolean,
+        required: true,
         default: false
     },
     dailyHousekeeping: {
         type: Boolean,
+        required: true,
         default: false
     },
 
