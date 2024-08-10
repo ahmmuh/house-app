@@ -1,6 +1,6 @@
 import {HouseModel} from "../models/houseModel.js";
-import { Buffer } from 'buffer';
-import {HouseCategory} from "../models/house-category.js"; // Importera Buffer från Node.js
+import {Category} from "../models/Category.js";
+import mongoose from "mongoose"; // Importera Buffer från Node.js
 
 export const getHouses = async (req, res) => {
     try {
@@ -35,11 +35,37 @@ export const addHouse = async (req, res) => {
 export const createHouse = async (req, res) => {
 
     try {
-        const category = req.params.category
-        console.log("CategoryID params", category)
-        const newCategory = await HouseCategory.findById(category)
-        if(!newCategory){
-            return res.status(404).json({message: 'No House Category, choose category !!!'});
+        const {
+            houseType, houseTransactions,
+            houseStairs, description, bathrooms,
+            yearBuilt, houseWidth, houseKitchen,
+            houseHeight, squareMeters, price, rooms,
+            roomType, privateBathroom, available, fromStartDate,
+            toStartDate, children, adults, houseWifi,
+            houseWater, toilets, toiletType, houseParking, category,
+            //location,
+             airportShuttle, familyRooms,
+            restaurant, nonSmokingRooms,
+            roomService, rontDesk24hr, teaCoffeeMaker, breakfast,
+            terrace, laundry, elevator, dailyHousekeeping
+        } = req.body;
+
+        console.log("req.body", req.body);
+
+        const categoryId = req.params.categoryId || req.body.categoryId;
+        console.log("req.params", req.params);
+        console.log("CategoryID params", categoryId);
+
+        if (!categoryId) {
+            return res.status(400).json({ message: 'Category ID is missing' });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+            return res.status(400).json({ message: 'Invalid Category ID' });
+        }
+        const selectedCategory = await Category.findById(categoryId);
+        if (!selectedCategory) {
+            return res.status(400).json({ message: 'No House Category' });
         }
         if (!req.body.images || req.body.images.length === 0) {
             return res.status(400).json({ success: false, message: "Files are required" });
@@ -54,56 +80,22 @@ export const createHouse = async (req, res) => {
                 contentType: image.type
             };
         });
-
-
-        const {
-            houseType,
-            houseTransactions,
-            description,
-            bathrooms,
-            yearBuilt,
-            squareMeters,
-            houseWidth,
-            houseHeight,
-            price,
-            rooms,
-            houseWifi,
-            houseWater,
-            toilets,
-            houseParking,
-           // category
-
-            // user,
-        } = req.body;
-
-        // const ownerUser = await User.findById(req.body.user);
-
         const newHouse = new HouseModel({
-            houseType,
-            houseTransactions,
-            description,
-            bathrooms,
-            yearBuilt,
-            houseHeight,
-            houseWidth,
-            squareMeters,
-            price,
-            rooms,
-            houseWifi,
-            houseWater,
-            toilets,
-            houseParking,
-         /*   thumbnail: {
-                data: req.file.buffer,
-                type: req.file.mimetype
-            },*/
-          //  category,
-            images,
-            //location,
-            // user,
+            houseType, houseTransactions,
+            houseStairs, description, bathrooms,
+            yearBuilt, houseWidth, houseKitchen,
+            houseHeight, squareMeters, price, rooms,
+            roomType, privateBathroom, available, fromStartDate,
+            toStartDate, children, adults, houseWifi, images,
+            houseWater, toilets, toiletType, houseParking, category,
+            // location,
+           airportShuttle, familyRooms,
+            restaurant, nonSmokingRooms,
+            roomService, rontDesk24hr, teaCoffeeMaker, breakfast,
+            terrace, laundry, elevator, dailyHousekeeping
         });
-        await newHouse.save();
-        console.log(newHouse)
+        console.log("New house object with Category ID", newHouse)
+       // await newHouse.save();
         res.status(201).json({ message: "One House has been created" });
     } catch (error) {
         res.status(500).json({ error: "Fadlan iska hubi inaa buux buuxisay warbixin dhamestiran", msg: error.message });
@@ -112,6 +104,7 @@ export const createHouse = async (req, res) => {
 
 export const updateHouse = async (req, res) => {
     try {
+
         const house = await HouseModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!house) throw new Error("House Not found");
         res.status(200).json(house); // Returnerar det uppdaterade huset

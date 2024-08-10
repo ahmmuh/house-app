@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 router.get('/houses/category', getHouseCategories);
-router.get('/houses/category/:id', getHouseCategoriesById);
+router.get('/houses/category/:categoryId', getHouseCategoriesById);
 router.post('/houses/category', createHouseCategory);
 router.put('/houses/category/:id', updateHouseCategory);
 router.delete('/houses/category/:id',deleteHouseCategory );

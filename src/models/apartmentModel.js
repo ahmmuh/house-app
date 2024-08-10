@@ -1,38 +1,12 @@
 import mongoose from "mongoose";
-const houseSchema = new mongoose.Schema({
-    houseType: {
-        type: String,
-        enum:
-            ['Fillo', 'Guri Dabaq ah', 'Guri Jiingad', 'Baacweeyne',
-            'Modul', 'Hotel','Guri firaashan'
-            ],
-        required: true,
-        message: 'Dooro nuuca guriga aa dooneeysid, walaal.',
-    },
-
-    //gör om det till och fixa controll class för att kunna hantera detta dymaniskt
-    houseTransactions: {
-        type: String,
-        enum: ['Kiro', 'Iibin', 'Iibsasho', 'Baddal'],
-        required: true,
-        message: 'Hus status är obligatoriskt.',
-    },
-    houseStairs: {
-        type: String,
-        enum: ['Dabaq 1 aad ','Dabaq 2 aad','Dabaq 3 aad','Dabaq 4aad '],
-    },
-
+const apartmentSchema = new mongoose.Schema({
     description: { type: String },
     bathrooms: {
         type: Number,
         required: true,
         message: 'Antal badrum är obligatoriskt.',
     },
-    yearBuilt: {
-        type: Date,
-        required: true,
-        message: 'Byggår är obligatoriskt.',
-    },
+
     houseWidth:{
         type: Number,
         required: true,
@@ -77,7 +51,7 @@ const houseSchema = new mongoose.Schema({
         required: true
     },
 
-  images:[{
+    images:[{
         data: Buffer,
         contentType: String
     }],
@@ -104,18 +78,18 @@ const houseSchema = new mongoose.Schema({
         ref: 'Category',
     },
 
-/*
-    location: {
-        type: {
-            type: String,
-            enum: ['Point'],
-            required: true
-        },
-        coordinates: {
-            type: [Number],
-            required: true
-        }
-    },*/
+    /*
+        location: {
+            type: {
+                type: String,
+                enum: ['Point'],
+                required: true
+            },
+            coordinates: {
+                type: [Number],
+                required: true
+            }
+        },*/
 
     airportShuttle: {
         type: Boolean,
@@ -169,11 +143,7 @@ const houseSchema = new mongoose.Schema({
         required: true,
         default: false
     },
-    elevator: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
+
     dailyHousekeeping: {
         type: Boolean,
         required: true,
@@ -184,4 +154,4 @@ const houseSchema = new mongoose.Schema({
     updatedAt: { type: Date, default: Date.now },
 });
 
-export const HouseModel = mongoose.model('HouseModel', houseSchema);
+export const ApartmentModel = mongoose.model('ApartmentModel', apartmentSchema);

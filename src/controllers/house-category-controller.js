@@ -1,4 +1,4 @@
-import {HouseCategory} from "../models/house-category.js";
+import {Category} from "../models/Category.js";
 
 
 
@@ -6,7 +6,7 @@ import {HouseCategory} from "../models/house-category.js";
 export const createHouseCategory = async (req, res) => {
     try {
         const {name, description,isActive} = req.body;
-        const houseCategory = new HouseCategory({name, description, isActive});
+        const houseCategory = new Category({name, description, isActive});
         await houseCategory.save();
         return res.status(201).json({message:"House Category created"});
     }
@@ -18,7 +18,7 @@ export const createHouseCategory = async (req, res) => {
 
 export const getHouseCategories = async (req, res) => {
     try{
-        const houseCategories = await HouseCategory.find();
+        const houseCategories = await Category.find();
         if(!houseCategories){
             return res.status(404).json({message: 'No House Categories'});
         }
@@ -34,8 +34,9 @@ export const getHouseCategories = async (req, res) => {
 
 export const getHouseCategoriesById = async (req, res) => {
     try {
-        const {categoryId} = req.params;
-        const houseCategory = await HouseCategory.findById(categoryId);
+        const categoryId = req.params.categoryId;
+        console.log("Category by ID: ", categoryId)
+        const houseCategory = await Category.findById(categoryId);
         if (!houseCategory) {
             return res.status(404).json({message: 'No House Category'});
         }
@@ -48,11 +49,16 @@ export const getHouseCategoriesById = async (req, res) => {
 }
 
 
+export const selectedCategoryById = (categoryId) =>{
+    return categoryId
+}
+
+
     export const updateHouseCategory  = async (req, res) => {
 
         try {
             const {categoryId} = req.params;
-            const updateCategory = await HouseCategory.findByIdAndUpdate(
+            const updateCategory = await Category.findByIdAndUpdate(
                 categoryId,
                 req.body,
             )
@@ -73,7 +79,7 @@ export const getHouseCategoriesById = async (req, res) => {
     export const deleteHouseCategory = async (req, res) => {
         try{
            const {categoryId} = req.params;
-           const houseCategory = await HouseCategory.findByIdAndDelete(categoryId)
+           const houseCategory = await Category.findByIdAndDelete(categoryId)
             if (!houseCategory){
                 return res.status(404).json({message: 'No House Category'});
             }
