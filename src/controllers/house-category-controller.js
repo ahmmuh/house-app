@@ -6,6 +6,11 @@ import {Category} from "../models/Category.js";
 export const createHouseCategory = async (req, res) => {
     try {
         const {name, description,isActive} = req.body;
+
+        const existingCategory = await Category.findOne({ name });
+        if (existingCategory) {
+            return res.status(400).json({ message: 'Category name already exists' });
+        }
         const houseCategory = new Category({name, description, isActive});
         await houseCategory.save();
         return res.status(201).json({message:"House Category created"});

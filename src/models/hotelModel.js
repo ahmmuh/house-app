@@ -1,7 +1,13 @@
 import mongoose from "mongoose";
 
 const hotelSchema = new mongoose.Schema({
+hotelName:{
+    type:String,
+    required:true,
+    trim:true,
+    message:"name is required"
 
+},
     roomType: {
         type: String,
         default: 'single room'

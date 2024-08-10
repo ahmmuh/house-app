@@ -1,6 +1,7 @@
 import {Category} from "../models/Category.js";
 import mongoose from "mongoose";
-import {HotelModel} from "../models/hotelModel.js"; // Importera Buffer från Node.js
+import {HotelModel} from "../models/hotelModel.js";
+import {convertImageToBase64} from "../utils/convertImageTobase64.js"; // Importera Buffer från Node.js
 
 export const getHotelRooms = async (req, res) => {
     try {
@@ -33,6 +34,7 @@ export const createHotelRoom = async (req, res) => {
 
     try {
         const {
+            hotelName,
             roomType, price,
             description,
             hotelRoomWidth,
@@ -50,32 +52,16 @@ export const createHotelRoom = async (req, res) => {
             breakfast, category
         } = req.body;
 
-        const categoryId = req.params.categoryId;
-        if (!mongoose.Types.ObjectId.isValid(categoryId)) {
-            return res.status(400).json({ message: 'Invalid Category ID' });
-        }
-
-        const selectedCategory = await Category.findById(categoryId);
+        const selectedCategory = await Category.findById(req.body.category);
         if (!selectedCategory) {
             return res.status(404).json({ message: 'No selectedCategory found' });
         }
         console.log("selectedCategory",selectedCategory)
+        //convert image to base64
+        const images = convertImageToBase64(req)
 
-        if (!req.body.images || req.body.images.length === 0) {
-            return res.status(400).json({ success: false, message: "Files are required" });
-        }
-
-        const images = req.body.images.map((image) => {
-            if (typeof image.base64 !== 'string') {
-                throw new Error('Invalid base64 string');
-            }
-            return {
-                type: Buffer.from(image.base64.split(",")[1], 'base64'),
-                contentType: image.type
-            };
-        });
         const newHotelRoom = new HotelModel({
-            roomType, price, description,
+            hotelName,roomType, price, description,
             hotelRoomWidth, hotelRoomHeight,
             squareMeters, privateToilet, available,
             fromStartDate, toStartDate,
@@ -92,7 +78,7 @@ export const createHotelRoom = async (req, res) => {
 
         });
         console.log("New hotel room object with Category ID", newHotelRoom)
-        // await newHotelRoom.save();
+       await newHotelRoom.save();
         res.status(201).json({ message: "One Hotel has been created" });
     } catch (error) {
         res.status(500).json({ error: "Fadlan iska hubi inaa buux buuxisay warbixin dhamestiran", msg: error.message });
