@@ -35,21 +35,21 @@ export const createHotelRoom = async (req, res) => {
     try {
         const {
             hotelName,
-            roomType, price,
+            isSingelRoom,
+            price,
             description,
             hotelRoomWidth,
             hotelRoomHeight,
-            squareMeters, privateToilet,
-            available,
-            fromStartDate, toStartDate,
-            children,
-            adults, hotelRoomWifi,
+            squareMeters,
+            privateToilet, available,
+            fromStartDate,
+            toEndDate, hotelRoomWifi,
             hotelRoomParking,
-            airportShuttle,
-            restaurant,
+            airportShuttle, restaurant,
             isNonSmokingRoom,
             roomService, frontDesk24hr,
-            breakfast, category
+            breakfast, teaCoffeeMaker,
+            category
         } = req.body;
 
         const selectedCategory = await Category.findById(req.body.category);
@@ -61,20 +61,15 @@ export const createHotelRoom = async (req, res) => {
         const images = convertImageToBase64(req)
 
         const newHotelRoom = new HotelModel({
-            hotelName,roomType, price, description,
-            hotelRoomWidth, hotelRoomHeight,
-            squareMeters, privateToilet, available,
-            fromStartDate, toStartDate,
-            children,
-            adults,
-            hotelRoomWifi,
+            hotelName, isSingelRoom, price,
+            description, hotelRoomWidth,
+            hotelRoomHeight, squareMeters,
+            privateToilet, available, fromStartDate,
+            toEndDate, hotelRoomWifi, hotelRoomParking,
+            airportShuttle, restaurant, isNonSmokingRoom,
+            roomService, frontDesk24hr, breakfast, teaCoffeeMaker,
             images,
-            hotelRoomParking,
-            airportShuttle,
-            restaurant,
-            isNonSmokingRoom,
-            roomService, frontDesk24hr,
-            breakfast, category
+             category
 
         });
         console.log("New hotel room object with Category ID", newHotelRoom)

@@ -1,121 +1,109 @@
 import mongoose from "mongoose";
 
 const hotelSchema = new mongoose.Schema({
-hotelName:{
-    type:String,
-    required:true,
-    trim:true,
-    message:"name is required"
-
-},
-    roomType: {
+    hotelName: {
         type: String,
-        default: 'single room'
+        required: [true, 'Hotel name is required'],
+        trim: true
     },
-
+    isSingelRoom: {
+        type: Boolean,
+        default: false,
+        required: [true, 'isSingelRoom is required']
+    },
     price: {
         type: Number,
-        required: true,
-        message: 'Pris är obligatoriskt.',
+        default: 0,
+        min: [0, 'Price cannot be negative']
     },
-
-
-    description: { type: String },
+    description: {
+        type: String,
+        default: "",
+        trim: true
+    },
     hotelRoomWidth: {
         type: Number,
-        required: true,
-        message: 'Ballaca dhulka waa lama huraan'
+        default: 0,
+        min: [0, 'Width cannot be negative']
     },
-
     hotelRoomHeight: {
         type: Number,
-        required: true,
-        message: "Dhererka guriga waa imisa?"
+        default: 0,
+        min: [0, 'Height cannot be negative']
     },
     squareMeters: {
         type: Number,
-        required: true,
-        message: 'Kvadratmeter är obligatoriskt.',
+        default: 0,
+        min: [0, 'Square meters cannot be negative']
     },
-
     privateToilet: {
         type: Boolean,
-        default: false
+        default: false,
+        required: [true, 'privateToilet is required']
     },
     available: {
         type: Boolean,
-        default: true
+        default: false,
+        required: [true, 'available is required']
     },
     fromStartDate: {
         type: Date,
-        required: true,
-        message: 'From start date'
+        default: Date.now
     },
-    toStartDate: {
+    toEndDate: {
         type: Date,
-        required: true,
-        message: 'To start date'
-    },
-    children: {
-        type: Number,
-        default: 0,
-        message: 'Ilmo maa kula socdo?'
-    },
-    adults: {
-        type: Number,
-        default: 1,
-        required: true,
-        message: "Meeqa qof oo aa weyn"
+        default: Date.now
     },
     hotelRoomWifi: {
         type: Boolean,
-        required: true
+        default: false,
+        required: [true, 'hotelRoomWifi is required']
     },
-    images: [{
-        data: Buffer,
-        contentType: String
-    }],
-
     hotelRoomParking: {
         type: Boolean,
-        required: true,
-        message: 'Parking är obligatoriskt.'
+        default: false,
+        required: [true, 'hotelRoomParking is required']
     },
     airportShuttle: {
         type: Boolean,
-        required: true,
-        default: false
+        default: false,
+        required: [true, 'airportShuttle is required']
     },
     restaurant: {
         type: Boolean,
-        required: true,
-        default: false
+        default: false,
+        required: [true, 'restaurant is required']
     },
     isNonSmokingRoom: {
         type: Boolean,
-        required: true,
-        default: false
+        default: false,
+        required: [true, 'is Non Smoking hotel Room is required']
     },
     roomService: {
         type: Boolean,
-        required: true,
-        default: false
+        default: false,
+        required: [true, 'room Service is required']
     },
     frontDesk24hr: {
         type: Boolean,
-        required: true,
-        default: false
+        default: false,
+        required: [true, 'frontDesk24hr is required']
     },
     breakfast: {
         type: Boolean,
-        required: true,
-        default: false
+        default: false,
+        required: [true, 'breakfast is required']
     },
-    category: {
+    teaCoffeeMaker: {
+        type: Boolean,
+        default: false,
+        required: [true, 'teaCoffeeMaker is required']
+    },
+category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
+        required: true,
+        message: 'Category is required',
     },
-
-});
-
+}, { timestamps: true });
 export const HotelModel = mongoose.model('HotelModel', hotelSchema);
