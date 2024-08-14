@@ -1,18 +1,19 @@
 import express from 'express';
 import {
-    countAllHotelRooms, getHotelRoomWithPagination,
-    searchHotelRoomsByHighPrice,
-    searchHotelRoomsByLowPrice
+    countAllHotels,
+    getHotelWithPagination,
+    searchHotelsByHighPrice
+
 } from "../controllers/HotelController.js";
 
 
 const router = express.Router();
 
-router.get('/hotelRooms/highprices', searchHotelRoomsByHighPrice);
-router.get('/hotelRooms/lowprices', searchHotelRoomsByLowPrice);
-router.get('/hotelRooms/paginations', getHotelRoomWithPagination);
+router.get('/hotes/highprices', searchHotelsByHighPrice);
+router.get('/hotels/lowprices', searchHotelsByHighPrice);
+router.get('/hotels/paginations', getHotelWithPagination);
 
 //count all houses
-router.get("/hotelRooms/count", countAllHotelRooms);
+router.get("/hotels/count", countAllHotels);
 
 export default router;

@@ -1,17 +1,17 @@
 import express from 'express';
-
-import {upload} from "../uploadImages/uploadImage.js";
-import {createHotelRoom, deleteHotelRoom, getHotelRoomById, getHotelRooms, updateHotelRoom}
+import {createHotel, deleteHotel, getHotelById, getHotels, updateHotel}
     from "../controllers/HotelController.js";
+import {upload} from "../uploadImages/uploadImage.js";
+
 
 const router = express.Router();
 
 
-router.get('/hotelRooms', getHotelRooms);
-router.get('/hotelRooms/id', getHotelRoomById);
-router.post('/hotelRooms', upload.array('images'), createHotelRoom);
-router.put('/hotelRooms/:id', updateHotelRoom);
-router.delete('/hotelRooms/:id', deleteHotelRoom);
+router.get('/hotels', getHotels);
+router.get('/hotels/id', getHotelById);
+router.post('/hotels', upload.array('images'), createHotel);
+router.put('/hotels/:id', updateHotel);
+router.delete('/hotels/:id', deleteHotel);
 
 
 
