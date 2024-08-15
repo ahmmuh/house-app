@@ -14,27 +14,34 @@ const hotelSchema = new mongoose.Schema({
     price: {
         type: Number,
         default: 0,
+        required: true,
         min: [0, 'Price cannot be negative']
     },
     description: {
         type: String,
         default: "",
-        trim: true
+        trim: true,
+        required: true
+
     },
     hotelRoomWidth: {
         type: Number,
         default: 0,
+        required: true,
         min: [0, 'Width cannot be negative']
     },
     hotelRoomHeight: {
         type: Number,
         default: 0,
-        min: [0, 'Height cannot be negative']
+        required: true,
+        min: [0, 'Height cannot be negative'],
     },
     squareMeters: {
         type: Number,
         default: 0,
-        min: [0, 'Square meters cannot be negative']
+        required: true,
+        min: [0, 'Square meters cannot be negative'],
+
     },
     privateToilet: {
         type: Boolean,
@@ -48,11 +55,13 @@ const hotelSchema = new mongoose.Schema({
     },
     fromStartDate: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        required: true
     },
     toEndDate: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        required: true
     },
     hotelRoomWifi: {
         type: Boolean,
@@ -105,5 +114,10 @@ category: {
         required: true,
         message: 'Category is required',
     },
+    images: [{
+        data: Buffer,
+        contentType: String,
+        required: true
+    }],
 }, { timestamps: true });
 export const HotelModel = mongoose.model('HotelModel', hotelSchema);

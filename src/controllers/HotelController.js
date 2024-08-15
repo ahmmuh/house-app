@@ -15,10 +15,10 @@ export const getHotels = async (req, res) => {
 
 export const getHotelById = async (req, res) => {
     try {
-        const room = await HotelModel.findById(req.params.id);
+        const hotel = await HotelModel.findById(req.params.id);
 
-        if (room) {
-            res.status(200).send(room);
+        if (hotel) {
+            res.status(200).send(hotel);
         } else {
             res.status(400).json({ success: false, message: "hotel Not found" });
         }
@@ -33,6 +33,21 @@ export const getHotelById = async (req, res) => {
 export const createHotel = async (req, res) => {
 
     try {
+        const id = await Category.findById(req.params.id);
+        if (mongoose.isValidObjectId(id)) {
+            Category.findById(req.id,(err,category) =>{
+                if (err){
+                    console.log(err);
+                }
+                else {
+                    console.log(category)
+                }
+            })
+
+        }
+        else {
+            console.log("Invalid category ID: ", id);
+        }
         const {
             hotelName,
             isSingelRoom,
@@ -52,14 +67,9 @@ export const createHotel = async (req, res) => {
             category
         } = req.body;
 
-        const selectedCategory = await Category.findById(req.body.category);
-        if (!selectedCategory) {
-            return res.status(404).json({ message: 'No selectedCategory found' });
-        }
-        console.log("selectedCategory",selectedCategory)
+
         //convert image to base64
         const images = convertImageToBase64(req)
-
         const newHotel = new HotelModel({
             hotelName, isSingelRoom, price,
             description, hotelRoomWidth,
@@ -111,12 +121,12 @@ export const getHotelWithPagination = async (req, res) => {
         const totalHotels = await HotelModel.countDocuments(); // Totalt antal hus
         const totalPages = Math.ceil(totalHotelRooms / pageSize); // Totalt antal sidor
 
-        const rooms = await HotelModel.find()
+        const hotels = await HotelModel.find()
             .skip((currentPage - 1) * pageSize)
             .limit(pageSize);
 
         res.status(200).json({
-            rooms,
+            hotels,
             currentPage,
             totalPages,
             pageSize,
