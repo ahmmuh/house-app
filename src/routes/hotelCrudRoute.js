@@ -1,18 +1,18 @@
-import express from 'express';
-import {createHotel, deleteHotel, getHotelById, getHotels, updateHotel}
-    from "../controllers/HotelController.js";
-import {upload} from "../uploadImages/uploadImage.js";
+import express from "express"
+import {
+  createHotel,
+  deleteHotel,
+  getHotelById,
+  getHotels,
+  updateHotel,
+} from "../controllers/HotelController.js"
+import uploadImages from "../uploadImages/uploadImage.js"
 
+const router = express.Router()
+router.get("/hotels", getHotels)
+router.get("/hotels/id", getHotelById)
+router.post("/hotels", uploadImages().array("images", 10), createHotel)
+router.put("/hotels/:id", updateHotel)
+router.delete("/hotels/:id", deleteHotel)
 
-const router = express.Router();
-
-
-router.get('/hotels', getHotels);
-router.get('/hotels/id', getHotelById);
-router.post('/hotels', upload.array('images'), createHotel);
-router.put('/hotels/:id', updateHotel);
-router.delete('/hotels/:id', deleteHotel);
-
-
-
-export default router;
+export default router
