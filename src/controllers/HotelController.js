@@ -1,5 +1,5 @@
 import { Category } from "../models/Category.js"
-import mongoose from "mongoose"
+import mongoose, { Mongoose } from "mongoose"
 import { convertImageToBase64 } from "../utils/convertImageTobase64.js" // Importera Buffer från Node.js
 import Hotel from "../models/hotel.js"
 import imageOptimazationHandler from "../uploadImages/imageOptimization/imageOptimization.js"
@@ -30,21 +30,39 @@ export const getHotelById = async (req, res) => {
 }
 
 export const createHotel = async (req, res) => {
+  console.log("INNAN TRY BLOCK Request Body ", req.body)
+
   try {
-    console.log("Req by id", req.params.id)
-    const categoryID = await Category.findById(req.params.id)
-    if (mongoose.isValidObjectId(categoryID)) {
-      Category.findById(req.id, (err, category) => {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log(category)
-        }
-      })
-    } else {
-      console.log("Invalid category ID: ", categoryID)
+    console.log("Request Body ", req.body)
+    const categoryId = req.params.id
+
+    if (!mongoose.isValidObjectId(categoryId)) {
+      return res.status(400).json({ message: "Invalid Category ID" })
     }
 
+    const foundedCategory = await Category.findById(categoryId)
+    if (!foundedCategory)
+      return res.status(400).json({ message: "Not found category" })
+
+    // console.log("Founded Category ID ", foundedCategory)
+    console.log("req.files ", req.files)
+
+    console.log(" INNAN REQ:FILES ")
+
+    if (!req.files || !req.files.length === 0) {
+      return res.status(400).send("No files were uploaded.")
+    }
+    console.log(" INNAN Images Optimized Successfully")
+
+    const images = req.files
+
+    const optimaziedImages = await Promise.all(
+      images.map(async (file) => {
+        return imageOptimazationHandler(file.buffer)
+      })
+    )
+
+    console.log("Images Optimized Successfully")
     const {
       hotelName,
       price,
@@ -59,22 +77,6 @@ export const createHotel = async (req, res) => {
       restaurant,
       category,
     } = req.body
-
-    if (!req.files || !req.files.images) {
-      return res.status(400).send("No files were uploaded.")
-    }
-
-    const images = Array.isArray(req.files.images)
-      ? req.files.images
-      : [req.files.images]
-
-    const optimaziedImages = await Promise.all(
-      images.map(async (file) => {
-        return imageOptimazationHandler(file.data)
-      })
-    )
-
-    console.log("Images Optimized Successfully")
 
     const newHotel = new Hotel({
       hotelName,
@@ -93,7 +95,7 @@ export const createHotel = async (req, res) => {
     })
 
     console.log("New hotel room object with Category ID", newHotel)
-    // await newHotel.save()
+    await newHotel.save()
     res.status(201).json({ message: "One Hotel has been created" })
   } catch (error) {
     res.status(500).json({
